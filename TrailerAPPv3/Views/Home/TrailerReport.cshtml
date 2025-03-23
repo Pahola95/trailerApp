@@ -1,0 +1,63 @@
+﻿    @model IEnumerable<TrailerAPPv3.Models.movement_trailer>
+    @{
+        ViewBag.Title = "TrailerReport";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+
+    <h2>Reporte Trailer</h2>
+
+    @if (Session["UserId"] != null)
+    {
+        <h2>Historial de movimientos</h2>
+
+        using (Html.BeginForm("GenerateReport", "Home"))
+        {
+            <p>
+                <input type="submit" class="btn btn-dark" value="Generar Reporte" />
+            </p>
+        }
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.latitude)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.longitude)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.datetime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.trailer.plate)
+                </th>
+         
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.latitude)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.longitude)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.datetime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.trailer.plate)
+                    </td>
+                    
+                </tr>
+            }
+
+        </table>
+    }
+    else
+    {
+
+        <h2 class="text-bg-danger">ACCESO DENEGADO</h2>
+        <h4>Necesitas loguearte primero</h4>
+        <li>@Html.ActionLink("Login", "Login", "Account")</li>
+    }

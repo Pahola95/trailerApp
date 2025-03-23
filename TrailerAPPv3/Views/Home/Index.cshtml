@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+    <section class="row" aria-labelledby="aspnetTitle">
+        <h1 id="title">Trailer App</h1>
+        <p class="lead">Aplicación que proporciona el control y monitoreo sobre los trailers de la compañia.</p>
+        <p>
+            @Html.ActionLink("Inicio de sesión", "Login", "Account", new { area = "" }, new {  @class = "btn btn-primary" })
+            @Html.ActionLink("Registro", "Register", "Account", new { area = "" }, new { @class = "btn-secondary" })
+        </p>
+    </section>
+
+</main>

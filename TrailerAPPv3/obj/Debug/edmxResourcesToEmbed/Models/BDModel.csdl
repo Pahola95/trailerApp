@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="trailers_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="trailer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="plate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="modelo" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+    <Property Name="tipo" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+    <Property Name="adquisition_datetime" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+    <Property Name="status" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+  </EntityType>
+  <EntityContainer Name="trailers_dbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="trailer" EntityType="Self.trailer" />
+  </EntityContainer>
+</Schema>

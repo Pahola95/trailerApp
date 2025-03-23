@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="trailers_dbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="user_system" Relationship="Self.role_id" FromRole="role" ToRole="user_system" />
+  </EntityType>
+  <EntityType Name="trailer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="plate" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="modelo" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+    <Property Name="tipo" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+    <Property Name="adquisition_datetime" Type="DateTime" Precision="3" />
+    <Property Name="status" Type="String" MaxLength="25" FixedLength="true" Unicode="true" />
+    <NavigationProperty Name="movement_trailer" Relationship="trailers_dbModel.trailer_id_fk" FromRole="trailer" ToRole="movement_trailer" />
+    <NavigationProperty Name="tracking" Relationship="trailers_dbModel.trailer_id_fk_movement" FromRole="trailer" ToRole="tracking" />
+    <Property Name="linea" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="color" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="user_system">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+    <Property Name="email" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+    <Property Name="password" Type="String" MaxLength="255" FixedLength="true" Unicode="true" />
+    <Property Name="role_id" Type="Int32" />
+    <NavigationProperty Name="role" Relationship="Self.role_id" FromRole="user_system" ToRole="role" />
+  </EntityType>
+  <Association Name="role_id">
+    <End Role="role" Type="Self.role" Multiplicity="0..1" />
+    <End Role="user_system" Type="Self.user_system" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="role">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_system">
+        <PropertyRef Name="role_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="trailers_dbEntities3" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="role" EntityType="Self.role" />
+    <EntitySet Name="trailer" EntityType="Self.trailer" />
+    <EntitySet Name="user_system" EntityType="Self.user_system" />
+    <AssociationSet Name="role_id" Association="Self.role_id">
+      <End Role="role" EntitySet="role" />
+      <End Role="user_system" EntitySet="user_system" />
+    </AssociationSet>
+    <EntitySet Name="movement_trailer" EntityType="trailers_dbModel.movement_trailer" />
+    <AssociationSet Name="trailer_id_fk" Association="trailers_dbModel.trailer_id_fk">
+      <End Role="trailer" EntitySet="trailer" />
+      <End Role="movement_trailer" EntitySet="movement_trailer" />
+    </AssociationSet>
+    <EntitySet Name="tracking" EntityType="trailers_dbModel.tracking" />
+    <AssociationSet Name="trailer_id_fk_movement" Association="trailers_dbModel.trailer_id_fk_movement">
+      <End Role="trailer" EntitySet="trailer" />
+      <End Role="tracking" EntitySet="tracking" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="movement_trailer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="trailer_id" Type="Guid" />
+    <Property Name="latitude" Type="Decimal" Precision="9" Scale="6" />
+    <Property Name="longitude" Type="Decimal" Precision="9" Scale="6" />
+    <Property Name="datetime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="trailer" Relationship="trailers_dbModel.trailer_id_fk" FromRole="movement_trailer" ToRole="trailer" />
+  </EntityType>
+  <Association Name="trailer_id_fk">
+    <End Type="trailers_dbModel.trailer" Role="trailer" Multiplicity="0..1" />
+    <End Type="trailers_dbModel.movement_trailer" Role="movement_trailer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="trailer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="movement_trailer">
+        <PropertyRef Name="trailer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="tracking">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Guid" Nullable="false" />
+    <Property Name="trailer_id" Type="Guid" />
+    <Property Name="latitude" Type="Decimal" Precision="9" Scale="6" />
+    <Property Name="longitude" Type="Decimal" Precision="9" Scale="6" />
+    <Property Name="datetime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="trailer" Relationship="trailers_dbModel.trailer_id_fk_movement" FromRole="tracking" ToRole="trailer" />
+  </EntityType>
+  <Association Name="trailer_id_fk_movement">
+    <End Type="trailers_dbModel.trailer" Role="trailer" Multiplicity="0..1" />
+    <End Type="trailers_dbModel.tracking" Role="tracking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="trailer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tracking">
+        <PropertyRef Name="trailer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

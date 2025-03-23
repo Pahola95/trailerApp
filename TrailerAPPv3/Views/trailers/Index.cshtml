@@ -1,0 +1,106 @@
+﻿@model IEnumerable<TrailerAPPv3.Models.trailer>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@if (Session["UserId"] != null)
+{
+
+
+    <h2>Listado de traileres</h2>
+    using (Html.BeginForm("Index", "trailers"))
+    {
+        <p>
+            Filtrar por Placa: @Html.TextBox("placa")
+            Filtrar por Estado: @Html.TextBox("status")
+            <input type="submit" class="btn btn-dark" value="Buscar" />
+        </p>
+    }
+    if (Session["Role"]?.ToString() == "1")
+    {
+        <p>
+            @Html.ActionLink("Crear nuevo trailer", "Create", null, new { @class = "btn btn-primary" })
+        </p>
+    }
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.plate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.modelo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tipo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.adquisition_datetime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.linea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.color)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.plate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.modelo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.adquisition_datetime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.linea)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.color)
+                </td>
+                <td>
+                    @if (Session["Role"]?.ToString() == "1")
+                    {
+                        <div>
+                            @Html.ActionLink("Editar", "Edit", new { id = item.id }, new { @class = "btn btn-warning" }) |
+                            @Html.ActionLink("Eliminar", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })|
+                            @Html.ActionLink("Detalles", "Details", new { id = item.id }, new { @class = "btn btn-info" })
+                        </div>
+
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Detalles", "Details", new { id = item.id }, new { @class = "btn btn-info" })
+                    }
+
+
+                </td>
+            </tr>
+        }
+
+    </table>
+
+
+}
+else
+{
+
+    <h2 class="text-bg-danger">ACCESO DENEGADO</h2>
+    <h4>Necesitas loguearte primero</h4>
+    <li>@Html.ActionLink("Login", "Login", "Account")</li>
+}

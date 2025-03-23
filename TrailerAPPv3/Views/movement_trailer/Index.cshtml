@@ -1,0 +1,73 @@
+﻿@model IEnumerable<TrailerAPPv3.Models.movement_trailer>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@if (Session["UserId"] != null)
+{
+    <h2>Historial de movimientos</h2>
+
+    using (Html.BeginForm("Index", "movement_trailer"))
+    {
+        <p>
+            Filtrar por Placa: @Html.TextBox("placa")
+            <input type="submit" class="btn btn-dark" value="Buscar" />
+        </p>
+    }
+
+    <p>
+        @Html.ActionLink("Registrar nuevo moviento de trailer", "Create", null, new { @class = "btn btn-primary" })
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.longitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.datetime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.trailer.plate)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.latitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.longitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.datetime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.trailer.plate)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = item.id }, new { @class = "btn btn-warning" }) |
+
+                    @Html.ActionLink("Eliminar", "Delete", new { id = item.id }, new { @class = "btn btn-danger" })|
+                    @Html.ActionLink("Detalles", "Details", new { id = item.id }, new { @class = "btn btn-info" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+
+    <h2 class="text-bg-danger">ACCESO DENEGADO</h2>
+    <h4>Necesitas loguearte primero</h4>
+    <li>@Html.ActionLink("Login", "Login", "Account")</li>
+}

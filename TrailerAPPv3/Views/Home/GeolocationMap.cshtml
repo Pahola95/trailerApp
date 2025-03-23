@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "GeolocationMap";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<TrailerAPPv3.DTO.TrackingDTO>
+
+@if (Session["UserId"] != null)
+{
+
+    <h2>Mapa de ubicaciones de trailers actual</h2>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE5TsfQFsFs01rd2SuqZwiE6vb9e7FmqI&callback=initMap" async defer></script>
+    <script>
+    function initMap() {
+        var location = { lat: 14.63491, lng: -90.50688 };
+
+         var map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 10,
+             center: location
+            });
+
+            // Get locations from Razor model
+            var locations = @Html.Raw(Json.Encode(Model));
+
+            if (!Array.isArray(locations)) {
+                console.error("Locations data is not an array.");
+                return;
+            }
+
+            locations.forEach(function (location) {
+                var marker = new google.maps.Marker({
+                    position: { lat: location.latitude, lng: location.longitude },
+                    map: map,
+                    title: location.trailer_plate
+                });
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: `<strong>Modelo: ${location.trailer_model}</strong><br><strong> Placa: ${location.trailer_plate}</strong><br><strong>Estado: ${location.trailer_status}</strong><br>Lat: ${location.latitude}, Lng: ${location.longitude}<br><strong> Linea: ${location.trailer_linea}</strong><br><strong> Color: ${location.trailer_color}</strong><br>`
+                });
+
+                marker.addListener("click", function () {
+                    infowindow.open(map, marker);
+                });
+            });
+    }
+    </script>
+
+   
+
+
+    using (Html.BeginForm("GeolocationMap", "Home"))
+    {
+        <p>
+
+            <input type="submit" class="btn btn-info w-50" value="Refrescar Mapa" />
+        </p>
+    }
+
+    <div>
+        Mapa
+    </div>
+
+    <div id="map" style="height: 400px; width: 100%;"></div>
+
+
+
+}
+else
+{
+
+    <h2 class="text-bg-danger">ACCESO DENEGADO</h2>
+    <h4>Necesitas loguearte primero</h4>
+    <li>@Html.ActionLink("Login", "Login", "Account")</li>
+}

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="trailers_dbModelStoreContainer" CdmEntityContainer="trailers_dbEntities">
+    <EntitySetMapping Name="trailer">
+      <EntityTypeMapping TypeName="trailers_dbModel.trailer">
+        <MappingFragment StoreEntitySet="trailer">
+          <ScalarProperty Name="id" ColumnName="id" />
+          <ScalarProperty Name="plate" ColumnName="plate" />
+          <ScalarProperty Name="modelo" ColumnName="modelo" />
+          <ScalarProperty Name="tipo" ColumnName="tipo" />
+          <ScalarProperty Name="adquisition_datetime" ColumnName="adquisition_datetime" />
+          <ScalarProperty Name="status" ColumnName="status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

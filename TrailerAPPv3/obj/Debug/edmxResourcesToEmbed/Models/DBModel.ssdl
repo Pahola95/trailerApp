@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="trailers_dbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="movement_trailer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="trailer_id" Type="uniqueidentifier" />
+    <Property Name="latitude" Type="decimal" Precision="9" Scale="6" />
+    <Property Name="longitude" Type="decimal" Precision="9" Scale="6" />
+    <Property Name="datetime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="role">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" />
+    <Property Name="name" Type="nchar" MaxLength="25" />
+  </EntityType>
+  <EntityType Name="tracking">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="trailer_id" Type="uniqueidentifier" />
+    <Property Name="latitude" Type="decimal" Precision="9" Scale="6" />
+    <Property Name="longitude" Type="decimal" Precision="9" Scale="6" />
+    <Property Name="datetime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="trailer">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="plate" Type="nchar" MaxLength="10" />
+    <Property Name="modelo" Type="nchar" MaxLength="25" />
+    <Property Name="tipo" Type="nchar" MaxLength="25" />
+    <Property Name="adquisition_datetime" Type="datetime" />
+    <Property Name="status" Type="nchar" MaxLength="25" />
+    <Property Name="linea" Type="varchar" MaxLength="50" />
+    <Property Name="color" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="user_system">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="name" Type="nchar" MaxLength="255" />
+    <Property Name="email" Type="nchar" MaxLength="255" />
+    <Property Name="password" Type="nchar" MaxLength="255" />
+    <Property Name="role_id" Type="int" />
+  </EntityType>
+  <Association Name="role_id">
+    <End Role="role" Type="Self.role" Multiplicity="0..1" />
+    <End Role="user_system" Type="Self.user_system" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="role">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="user_system">
+        <PropertyRef Name="role_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="trailer_id_fk">
+    <End Role="trailer" Type="Self.trailer" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="movement_trailer" Type="Self.movement_trailer" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="trailer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="movement_trailer">
+        <PropertyRef Name="trailer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="trailer_id_fk_movement">
+    <End Role="trailer" Type="Self.trailer" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tracking" Type="Self.tracking" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="trailer">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="tracking">
+        <PropertyRef Name="trailer_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="trailers_dbModelStoreContainer">
+    <EntitySet Name="movement_trailer" EntityType="Self.movement_trailer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="role" EntityType="Self.role" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="tracking" EntityType="Self.tracking" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="trailer" EntityType="Self.trailer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="user_system" EntityType="Self.user_system" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="role_id" Association="Self.role_id">
+      <End Role="role" EntitySet="role" />
+      <End Role="user_system" EntitySet="user_system" />
+    </AssociationSet>
+    <AssociationSet Name="trailer_id_fk" Association="Self.trailer_id_fk">
+      <End Role="trailer" EntitySet="trailer" />
+      <End Role="movement_trailer" EntitySet="movement_trailer" />
+    </AssociationSet>
+    <AssociationSet Name="trailer_id_fk_movement" Association="Self.trailer_id_fk_movement">
+      <End Role="trailer" EntitySet="trailer" />
+      <End Role="tracking" EntitySet="tracking" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

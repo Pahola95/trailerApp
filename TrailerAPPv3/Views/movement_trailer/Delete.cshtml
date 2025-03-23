@@ -1,0 +1,87 @@
+﻿@model TrailerAPPv3.Models.movement_trailer
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDE5TsfQFsFs01rd2SuqZwiE6vb9e7FmqI&callback=initMap" async defer></script>
+<script>
+        function initMap() {
+            var location = { lat: @Model.latitude, lng: @Model.longitude }; // Default location (New York)
+
+            var map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 10,
+                center: location
+            });
+
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map,
+                draggable: true
+            });
+
+            // Update hidden form fields when marker is moved
+            google.maps.event.addListener(marker, 'dragend', function (event) {
+                document.getElementById("latitude").value = event.latLng.lat().toFixed(6);
+                document.getElementById("longitude").value = event.latLng.lng().toFixed(6);
+            });
+        }
+</script>
+<h2>Eliminar</h2>
+
+<h3>¿Estas seguro de eliminar este movimiento del trailer?</h3>
+<div>
+    <h4>Movimiento</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Mapa
+        </dt>
+        <dd>
+            <div id="map" style="height: 350px; width:350px;"></div>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.latitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.latitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.longitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.longitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.datetime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.datetime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.trailer.plate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.trailer.plate)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-danger mt-4 mb-4" /> |
+            @Html.ActionLink("Regresar", "Index", null, new { @class = "btn btn-dark" })
+        </div>
+    }
+</div>
