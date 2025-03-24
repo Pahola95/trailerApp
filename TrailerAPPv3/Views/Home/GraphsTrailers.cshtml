@@ -5,9 +5,10 @@
 }
 
 <h2>Grafica de Trailers</h2>
-
-<script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
-<script type="text/javascript">
+@if (Session["UserId"] != null)
+{
+    <script type="text/javascript" src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript">
 window.onload = function() {
 	var dataPoints = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.TrailerCounts));
 	console.log(dataPoints)
@@ -33,7 +34,16 @@ window.onload = function() {
 $("#chartContainer").CanvasJSChart(options);
 
 }
-</script>
+    </script>
 
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
-<script type="text/javascript" src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script type="text/javascript" src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+
+}
+else
+{
+
+    <h2 class="text-bg-danger">ACCESO DENEGADO</h2>
+    <h4>Necesitas loguearte primero</h4>
+    <li>@Html.ActionLink("Login", "Login", "Account")</li>
+}
